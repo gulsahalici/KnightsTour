@@ -1,23 +1,22 @@
 #ifndef _CHESS_H_
 #define _CHESS_H_
+#define BOARD_ROW_LEN 8
+#define BOARD_COLUMN_LEN 8
 
 class Chess{
 	public:
-		int x;
-		int y;
-		int chessBoard[8][8];
-		int array[4]={-2,-1,1,2};
+		int currentPosX;
+		int currentPosY;
+		int chessBoard[BOARD_ROW_LEN][BOARD_COLUMN_LEN];
+		int movementXY[4]; //Number of knight movements
 			
-		Chess(int,int);
+		Chess(int, int);
 		
-		bool isConvenient(int,int);
-		
-		int countMoves(int,int);
+		int countMoves(int, int);
 		
 		void printChessboard();
-		
-		
+	private:
+		bool isConvenient(int, int);	
 };
 
-#include "Chess.cpp"
 #endif

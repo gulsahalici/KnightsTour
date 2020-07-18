@@ -1,91 +1,74 @@
 #ifndef _CHESS_
 #define _CHESS_
 #include "Chess.h"
+#include <iostream>
 
-Chess::Chess(int _x, int _y){
+using namespace std;
+
+Chess::Chess(int _x, int _y) {
 	//Entered parameters checked for validity
-	bool invalidX=true;
-	bool invalidY=true;
-	int validXY[8]={0,1,2,3,4,5,6,7};
-	
-	for(int a=0; a<8; a++){
-		if(_x==validXY[a])
-			invalidX=false;
-		if(_y==validXY[a])
-			invalidY=false;
-	}
-	
-	if(invalidX==true){
-		x=0;
-		cout<<"The X coordinate of the starting point is assigned to 0 because of entered invalid value."<<endl;
-	}
-	else
-		x=_x;
-	if(invalidY==true){
-		y=0;
-		cout<<"The Y coordinate of the starting point is assigned to 0 because of entered invalid value."<<endl;
-	}
-	else
-		y=_y;
-		
+	if(0 <= _x && _x < BOARD_ROW_LEN)
+		currentPosX = _x;
+	else {
+		currentPosX = 0;
+		cout << "The X coordinate of the starting point is assigned to 0 because of entered invalid value." << endl;
+	}		
+	if(0 <= _y && _y < BOARD_COLUMN_LEN)
+		currentPosY = _y;
+	else {
+		currentPosY = 0;
+		cout << "The Y coordinate of the starting point is assigned to 0 because of entered invalid value." << endl;
+	}	
 	//Reset chessBoard
-	for(int i=0; i<8; i++){
-		for(int j=0; j<8; j++){
-			chessBoard[i][j]=-1;
+	for(int i = 0; i < BOARD_ROW_LEN; i++) {
+		for(int j = 0; j < BOARD_COLUMN_LEN; j++) {
+			chessBoard[i][j] = -1;
 		}
 	}
-	
+	movementXY[0] = -2;
+	movementXY[1] = -1;
+	movementXY[2] = 1;
+	movementXY[3] = 2;
 }
 
-bool Chess::isConvenient(int first, int second){
+bool Chess::isConvenient(int currentPosX, int currentPosY) {
 	//Check next move validty
-	if(first>=0 && first<8 && second>=0 && second<8 && chessBoard[first][second]==-1)
-		return true;
-			
+	if(0 <= currentPosX && currentPosX < BOARD_ROW_LEN && 0 <= currentPosY && currentPosY < BOARD_COLUMN_LEN && chessBoard[currentPosX][currentPosY] == -1)
+		return true;	
 	else 
 		return false;
+}
 		
-		}
-		
-int Chess::countMoves(int axisX,int axisY){
+int Chess::countMoves(int currentPosX, int currentPosY) {
 	//Count moves 	
-	int movesNum=0;
+	int movesNum = 0;
 			
-	if(isConvenient(axisX,axisY)){
+	if(isConvenient(currentPosX, currentPosY)) {
 		int moveX;
 		int moveY;
 					
-		for(int index1=0; index1<4; index1++){
-			
-			moveX=array[index1];
-			
-			for(int index2=0; index2<4; index2++){
-				
-				if(array[index2]*array[index2]!=moveX*moveX){
-							
-					moveY=array[index2];
-							
-					if(isConvenient(axisX+moveX,axisY+moveY))
+		for(int index1 = 0; index1 < 4; index1++) {
+			moveX = movementXY[index1];
+			for(int index2 = 0; index2 < 4; index2++) {
+				if(movementXY[index2] * movementXY[index2] != moveX * moveX) {
+					moveY = movementXY[index2];
+					if(isConvenient(currentPosX + moveX, currentPosY + moveY))
 						movesNum++;
-					}
 				}
 			}
 		}
-	else
-		movesNum=100;
+	}else
+		movesNum = 100;
 				
-		return movesNum;
-			
-	}
+	return movesNum;		
+}
 	
-void Chess::printChessboard(){
-	
-	for(int i=0; i<8; i++){
-		for(int j=0; j<8; j++){
-			cout<<chessBoard[i][j]<<"   ";
+void Chess::printChessboard() {
+	for(int i = 0; i < BOARD_ROW_LEN; i++) {
+		for(int j = 0; j < BOARD_COLUMN_LEN; j++) {
+			cout << chessBoard[i][j] << "   ";
 		}
-		cout<<endl;
+		cout << endl;
 	}
-	
 }
 #endif
