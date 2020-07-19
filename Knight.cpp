@@ -1,7 +1,6 @@
-#ifndef KNIGHT
-#define KNIGHT
 #include "Knight.h"
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
@@ -36,25 +35,47 @@ bool Knight::isConvenient(int currentPosX, int currentPosY) {
 int Knight::countMoves(int currentPosX, int currentPosY) {
 	//Count moves 	
 	int movesNum = 0;
-			
+				
 	if(isConvenient(currentPosX, currentPosY)) {
-		int moveX;
-		int moveY;
-					
 		for(int index1 = 0; index1 < 4; index1++) {
-			moveX = movementXY[index1];
 			for(int index2 = 0; index2 < 4; index2++) {
-				if(movementXY[index2] * movementXY[index2] != moveX * moveX) {
-					moveY = movementXY[index2];
-					if(isConvenient(currentPosX + moveX, currentPosY + moveY))
+				if(abs(movementXY[index2]) != abs(movementXY[index1])) {
+					if(isConvenient(currentPosX + movementXY[index1], currentPosY + movementXY[index2]))
 						movesNum++;
 				}
 			}
 		}
 	}else
-		movesNum = 100;
+		movesNum = 9;
 				
 	return movesNum;		
 }
 
-#endif
+int Knight::move(int counter) {
+	// x-2 y-1, x-1 y-2
+	// x+2 y-1, x+1 y-2
+	// x+2 y+1, x+1 y+2
+	// x-2 y+1, x-1 y+2
+	int nextMoveX;
+	int nextMoveY;
+	int minMoves = 9; // a knight's max movement number(8) + 1
+		
+	for(int index1 = 0; index1 < 4; index1++) {
+		for(int index2 = 0; index2 < 4; index2++) {
+			if(abs(movementXY[index2]) != abs(movementXY[index1])) {
+				int movesNum = countMoves(currentPosX + movementXY[index1], currentPosY + movementXY[index2]);
+				
+				if(movesNum < minMoves) {			
+					minMoves = movesNum;
+					nextMoveX = currentPosX + movementXY[index1];
+					nextMoveY = currentPosY + movementXY[index2];
+				}
+			}
+		}
+	}
+	board.matrix[currentPosX][currentPosY] = counter;
+	currentPosX = nextMoveX;
+	currentPosY = nextMoveY;
+		
+	return 0;
+}

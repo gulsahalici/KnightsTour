@@ -11,6 +11,7 @@ class Knight {
 		
 		Knight(int, int);
 		int countMoves(int, int);
+		int move(int);
 
 	private:
 		bool isConvenient(int, int);	

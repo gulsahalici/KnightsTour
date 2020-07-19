@@ -1,5 +1,3 @@
-#ifndef CHESSBOARD
-#define CHESSBOARD
 #include "ChessBoard.h"
 #include <iostream>
 
@@ -22,5 +20,3 @@ void ChessBoard::printChessboard() {
 		cout << endl;
 	}
 }
-
-#endif
