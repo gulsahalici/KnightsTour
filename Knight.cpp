@@ -1,11 +1,11 @@
-#ifndef _CHESS_
-#define _CHESS_
-#include "Chess.h"
+#ifndef KNIGHT
+#define KNIGHT
+#include "Knight.h"
 #include <iostream>
 
 using namespace std;
 
-Chess::Chess(int _x, int _y) {
+Knight::Knight(int _x, int _y) : board() {
 	//Entered parameters checked for validity
 	if(0 <= _x && _x < BOARD_ROW_LEN)
 		currentPosX = _x;
@@ -19,27 +19,21 @@ Chess::Chess(int _x, int _y) {
 		currentPosY = 0;
 		cout << "The Y coordinate of the starting point is assigned to 0 because of entered invalid value." << endl;
 	}	
-	//Reset chessBoard
-	for(int i = 0; i < BOARD_ROW_LEN; i++) {
-		for(int j = 0; j < BOARD_COLUMN_LEN; j++) {
-			chessBoard[i][j] = -1;
-		}
-	}
 	movementXY[0] = -2;
 	movementXY[1] = -1;
 	movementXY[2] = 1;
 	movementXY[3] = 2;
 }
 
-bool Chess::isConvenient(int currentPosX, int currentPosY) {
+bool Knight::isConvenient(int currentPosX, int currentPosY) {
 	//Check next move validty
-	if(0 <= currentPosX && currentPosX < BOARD_ROW_LEN && 0 <= currentPosY && currentPosY < BOARD_COLUMN_LEN && chessBoard[currentPosX][currentPosY] == -1)
-		return true;	
+	if(0 <= currentPosX && currentPosX < BOARD_ROW_LEN && 0 <= currentPosY && currentPosY < BOARD_COLUMN_LEN && this->board.matrix[currentPosX][currentPosY] == -1)
+		return true;
 	else 
 		return false;
 }
-		
-int Chess::countMoves(int currentPosX, int currentPosY) {
+
+int Knight::countMoves(int currentPosX, int currentPosY) {
 	//Count moves 	
 	int movesNum = 0;
 			
@@ -62,13 +56,5 @@ int Chess::countMoves(int currentPosX, int currentPosY) {
 				
 	return movesNum;		
 }
-	
-void Chess::printChessboard() {
-	for(int i = 0; i < BOARD_ROW_LEN; i++) {
-		for(int j = 0; j < BOARD_COLUMN_LEN; j++) {
-			cout << chessBoard[i][j] << "   ";
-		}
-		cout << endl;
-	}
-}
+
 #endif
