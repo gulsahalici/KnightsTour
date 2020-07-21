@@ -10,8 +10,7 @@ class Knight {
 		ChessBoard board;
 		
 		Knight(int, int);
-		int countMoves(int, int);
-		int move(int);
+		int countOrMove(int, int, int);
 
 	private:
 		bool isConvenient(int, int);	
