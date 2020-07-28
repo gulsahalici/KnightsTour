@@ -32,40 +32,50 @@ bool Knight::isConvenient(int currentPosX, int currentPosY) {
 		return false;
 }
 
-int Knight::countOrMove(int _currentPosX, int _currentPosY, int counter) {
-	//count's variable
+int Knight::countMoves(int currentPosX, int currentPosY) {
+	//Count moves 	
 	int movesNum = 0;
-	//move's variables
+				
+	if(isConvenient(currentPosX, currentPosY)) {
+		for(int index1 = 0; index1 < 4; index1++) {
+			for(int index2 = 0; index2 < 4; index2++) {
+				if(abs(movementXY[index2]) != abs(movementXY[index1])) {
+					if(isConvenient(currentPosX + movementXY[index1], currentPosY + movementXY[index2]))
+						movesNum++;
+				}
+			}
+		}
+	}else
+		movesNum = 9;
+				
+	return movesNum;		
+}
+
+int Knight::move(int counter) {
+	// x-2 y-1, x-1 y-2
+	// x+2 y-1, x+1 y-2
+	// x+2 y+1, x+1 y+2
+	// x-2 y+1, x-1 y+2
 	int nextMoveX;
 	int nextMoveY;
 	int minMoves = 9; // a knight's max movement number(8) + 1
-	
+		
 	for(int index1 = 0; index1 < 4; index1++) {
 		for(int index2 = 0; index2 < 4; index2++) {
 			if(abs(movementXY[index2]) != abs(movementXY[index1])) {
-				if(counter == -1) { //when counter=-1, the number of knight's moves is counted
-					if(isConvenient(_currentPosX, _currentPosY)) {
-						if(isConvenient(_currentPosX + movementXY[index1], _currentPosY + movementXY[index2]))
-							movesNum++;
-					}else
-						return minMoves;
-				}else { //when counter!=-1 ,knight is moved
-					int movesNum = countOrMove(currentPosX + movementXY[index1], currentPosY + movementXY[index2], -1);
+				int movesNum = countMoves(currentPosX + movementXY[index1], currentPosY + movementXY[index2]);
 				
-					if(movesNum < minMoves) {			
-						minMoves = movesNum;
-						nextMoveX = currentPosX + movementXY[index1];
-						nextMoveY = currentPosY + movementXY[index2];
-					}
+				if(movesNum < minMoves) {			
+					minMoves = movesNum;
+					nextMoveX = currentPosX + movementXY[index1];
+					nextMoveY = currentPosY + movementXY[index2];
 				}
 			}
 		}
 	}
-	
-	if(counter != -1) {
-		board.matrix[currentPosX][currentPosY] = counter;
-		currentPosX = nextMoveX;
-		currentPosY = nextMoveY;
-	}
-	return movesNum;
+	board.matrix[currentPosX][currentPosY] = counter;
+	currentPosX = nextMoveX;
+	currentPosY = nextMoveY;
+		
+	return 0;
 }

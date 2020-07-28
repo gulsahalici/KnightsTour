@@ -25,7 +25,7 @@ int main() {
 	knight.board.matrix[knight.currentPosX][knight.currentPosY] = counter;
 	
 	while(counter <= 64) {
-		knight.countOrMove(-1, -1, counter);
+		knight.move(counter);
 		counter++;
 	}
 	
